@@ -202,6 +202,17 @@ char  *bracket_trim(char *str)
   *str[len - brs] = 0;
 }
 
+char is_opp(char c)
+{
+  int i;
+ 
+  i = -1;
+  while (g_opps[++i].opp)
+    if (c == g_opps[i].opp)
+      return(1);
+  return (0);
+}
+
 char  *find_opp(char *str)
 {
   char *opp1;
@@ -209,16 +220,18 @@ char  *find_opp(char *str)
   
   opp1 = NULL;
   opp2 = NULL;
-  while(*str)
+  while(*++str)
   {
-    if (!opp2 && (*str == '+' || *str == '-'))
+    if (!is_opp(*(str - 1)))
     {
-      opp2 = str;
-      return (opp2);
+      if (!opp2 && (*str == '+' || *str == '-'))
+      {
+        opp2 = str;
+        return (opp2);
+      }
+      else if (!opp1 && (*str == '*' || *str == '/' || *str == '%'))
+        opp1 = str;
     }
-    else if (!opp1 && (*str == '*' || *str == '/' || *str == '%'))
-      opp1 = str;
-    ++str;
   }
   return (opp1);
 }
@@ -249,7 +262,7 @@ int  count_tree(t_node *node)
   if (node->c)
   {
     i = -1;
-    while (g_opps[++i])
+    while (g_opps[++i].opp)
       if (node->c == g_opps[i].opp)
         return (*(g_opps[i].f))(count_tree(node->left), \
             count_tree(node->right));
