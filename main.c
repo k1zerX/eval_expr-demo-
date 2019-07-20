@@ -44,6 +44,31 @@ typedef struct    s_ogs
   int             n;
 }                 t_ogs;
 
+int sum(int a, int b)
+{
+  return (a + b);
+}
+
+int mul(int a, int b)
+{
+  return (a * b);
+}
+
+int sub(int a, int b)
+{
+  return (a - b);
+}
+
+int div(int a, int b)
+{
+  return (a / b);
+}
+
+int mod(int a, int b)
+{
+  return (a % b);
+}
+
 t_opp g_opps[] = 
 {
   {'+', &sum},
@@ -135,8 +160,9 @@ char *parse(char *str)
   while (str[++i])
     if (!is_whitespace(str[i]))
       ++len;
-  if ((res = malloc(len * sizeof(*res))))
+  if ((res = malloc((len + 1) * sizeof(*res))))
   {
+    res[len] = 0;
     i = -1;
     len = -1;
     while (str[++i])
@@ -254,29 +280,4 @@ int main(int ac, char *av[])
     }
   }
   return 0;
-}
-
-int sum(int a, int b)
-{
-  return (a + b);
-}
-
-int mul(int a, int b)
-{
-  return (a * b);
-}
-
-int sub(int a, int b)
-{
-  return (a - b);
-}
-
-int div(int a, int b)
-{
-  return (a / b);
-}
-
-int mod(int a, int b)
-{
-  return (a % b);
 }
